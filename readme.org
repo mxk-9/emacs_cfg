@@ -1,0 +1,4 @@
+* My emacs configuration
+** Installation
+For ~Linux~, copy file to ~\~/.emacs~.
+For ~Windows~, ~%USERPROFILE%\Application Data\.emacs.d~
