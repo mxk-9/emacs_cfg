@@ -37,12 +37,31 @@
 (setq column-number-mode t)
 (display-fill-column-indicator-mode)
 (setq fill-column 80)
+(add-hook 'text-mode-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'markdown-mode-hook (lambda () (display-line-numbers-mode -1)))
+
+;; resize emacs frame by pixel
+(setq frame-resize-pixelwise t)
+(set-frame-position (selected-frame) 0 0)
+(set-frame-size (selected-frame) 1920 1080 t)
+
+;; [(t, c)rying (to make, about) normal tabs] ;;
+(setq tab-bar-close-button-show nil)       ;; hide tab close / x button
+(setq tab-bar-new-tab-choice "*dashboard*");; buffer to show in new tabs
+(setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator)) ;; elements to include in bar
+;; --=[(t, c)rying (to make, about) normal tabs]=-- ;;
 
 
 ;; ==[Emacs extra settings]== ;;
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 ;; ==[Emacs extra settings]== ;;
+
+;; Autoclose brackets ;;
+(electric-pair-mode 1)
+(setq electric-pair-preserve-balance nil)
+;; Autoclose brackets ;;
 
 ;; THEME ;;
 ;; (load-theme 'base16-uwunicorn t)
@@ -54,13 +73,24 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
 ;; Multiple cursors ;;
 
 ;; Custom keybinds ;;
 (global-set-key (kbd "C-<return>") 'evil-mode)
 (global-set-key (kbd "<f7>") 'windresize)
 ;; Custom keybinds ;;
+
+;; MARKDOWN SETTINGS ;;
+;; Native syntax highlighting of code block ;;
+(setq markdown-fontify-code-blocks-natively t)
+(add-hook 'markdown-mode-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'markdown-mode-hook (lambda () (markdown-toggle-markup-hiding t)))
+;; MARKDOWN SETTINGS ;;
+
+;; All the icons ;;
+(when (display-graphic-p)
+  (require 'all-the-icons))
+;; All the icons ;;
 
 ;; ==[MELPA]== ;;
 (require 'package)
@@ -133,7 +163,7 @@
  '(custom-safe-themes
    '("4e87dc5a6a6bd3ab09b1b86f3a0ab8f6bc86998f5be3b10474528a7834bf1c0b" default))
  '(package-selected-packages
-   '(multiple-cursors tree-sitter-langs tree-sitter windresize nix-mode evil lua-mode go-mode dap-mode lsp-ivy helm lsp-treemacs company flycheck lsp-ui lsp-mode base16-theme)))
+   '(multiple-cursors tree-sitter-langs tree-sitter windresize nix-mode evil lua-mode go-mode dap-mode lsp-ivy helm lsp-treemacs company flycheck lsp-ui lsp-mode base16-theme all-the-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
