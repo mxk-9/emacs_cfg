@@ -1,6 +1,9 @@
 ;; Remove "backup.files~"
 (setq make-backup-files nil)
 
+;; use custom file
+(setq custom-file "~/.emacs.custom.el")
+
 ;; Smooth scroll
 (setq scroll-step 1
       scroll-conservatively 10000)
@@ -13,6 +16,8 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+(setq inhibit-startup-message -1)
+(setq inhibit-splash-screen -1)
 
 ;; DISABLE SOUND
 (setq visible-bell 1)
@@ -30,16 +35,23 @@
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
 
-;; Line numbers
-;; (global-display-line-numbers-mode 1)
+;; Line numbers and columns
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 (setq column-number-mode t)
-(display-fill-column-indicator-mode)
+(setq display-fill-column-indicator-mode 1)
 (setq fill-column 80)
+
 (add-hook 'text-mode-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'text-mode-hook (lambda () (setq fill-column 80)))
+
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 (add-hook 'markdown-mode-hook (lambda () (display-line-numbers-mode -1)))
+
+(add-hook 'zig-mode-hook #'auto-fill-mode)
+(add-hook 'zig-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'zig-mode-hook (lambda() (setq fill-column 80)))
 
 ;; resize emacs frame by pixel
 (setq frame-resize-pixelwise t)
@@ -47,8 +59,8 @@
 (set-frame-size (selected-frame) 1920 1080 t)
 
 ;; [(t, c)rying (to make, about) normal tabs] ;;
-(setq tab-bar-close-button-show nil)       ;; hide tab close / x button
-(setq tab-bar-new-tab-choice "*dashboard*");; buffer to show in new tabs
+(setq tab-bar-close-button-show nil)        ;; hide tab close / x button
+(setq tab-bar-new-tab-choice "*dashboard*") ;; buffer to show in new tabs
 (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator)) ;; elements to include in bar
 ;; --=[(t, c)rying (to make, about) normal tabs]=-- ;;
 
@@ -65,7 +77,8 @@
 
 ;; THEME ;;
 ;; (load-theme 'base16-uwunicorn t)
-(load-theme 'base16-xcode-dusk t)
+;; (load-theme 'base16-xcode-dusk t)
+(load-theme 'base16-catppuccin-mocha t)
 ;; THEME ;;
 
 ;; Multiple cursors ;;
@@ -98,16 +111,26 @@
 (package-initialize)
 ;; ==[MELPA]== ;;
 
+
 ;; ==[LSP]== ;;
-(setq lsp-keymap-prefix "C-c C-l")
 
 ;; Enables lsp in chosen languages ;;
 (require 'lsp-mode)
 (add-hook 'c++-mode-hook #'lsp)
+
 (add-hook 'c-mode-hook #'lsp)
+(add-hook 'c-mode-hook #'tree-sitter-hl-mode)
+
 (add-hook 'go-mode-hook #'lsp)
+(add-hook 'go-mode-hook #'tree-sitter-hl-mode)
+
 (add-hook 'lua-mode-hook #'lsp)
+(add-hook 'lua-mode-hook #'tree-sitter-hl-mode)
+
 (add-hook 'nix-mode-hook #'lsp)
+
+(add-hook 'zig-mode-hook #'lsp)
+(add-hook 'zig-mode-hook #'tree-sitter-hl-mode)
 
 ;; Lsp UI ;;
 (setq lsp-ui-doc-enable 1)
@@ -127,8 +150,6 @@
 ;; tree-sitter ;;
 (require 'tree-sitter)
 (require 'tree-sitter-langs)
-;; (global-tree-sitter-mode)
-;; (tree-sitter-hl-mode)
 
 ;; below optional modes
 (dap-ui-mode 1)
@@ -139,35 +160,19 @@
 ;; vscode-cpptools
 (require 'dap-cpptools)
 
-;; Rust
-(dap-register-debug-template "Rust::GDB Run Configuration"
-                             (list :type "gdb"
-                                   :request "launch"
-                                   :name "GDB::Run"
-                                   :gdbpath "rust-gdb"
-                                   :target nil
-                                   :cwd nil))
+;; ;; Rust
+;; (dap-register-debug-template "Rust::GDB Run Configuration"
+;;                              (list :type "gdb"
+;;                                    :request "launch"
+;;                                    :name "GDB::Run"
+;;                                    :gdbpath "rust-gdb"
+;;                                    :target nil
+;;                                    :cwd nil))
 
-;; Go
-(require 'dap-dlv-go)
+;; ;; Go
+;; (require 'dap-dlv-go)
 ;; dap-mode ;;
 
 ;; ==[LSP]== ;;
 
-;; ==[Installed packages]== ;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("4e87dc5a6a6bd3ab09b1b86f3a0ab8f6bc86998f5be3b10474528a7834bf1c0b" default))
- '(package-selected-packages
-   '(multiple-cursors tree-sitter-langs tree-sitter windresize nix-mode evil lua-mode go-mode dap-mode lsp-ivy helm lsp-treemacs company flycheck lsp-ui lsp-mode base16-theme all-the-icons)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-;; ==[Installed packages]== ;;
+(load-file custom-file)

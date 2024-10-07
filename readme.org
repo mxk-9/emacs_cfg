@@ -7,3 +7,9 @@ Then, launch emacs install selected packages:
 #+begin_src
 M-x package-install-selected-packages RET
 #+end_src
+
+
+** ToDo [0%]
+1. [ ] Complete the emacs tutorial
+2. [ ] Treesitter
+3. [ ] Custom Lsp binaries paths
