@@ -132,6 +132,9 @@
 (add-hook 'zig-mode-hook #'lsp)
 (add-hook 'zig-mode-hook #'tree-sitter-hl-mode)
 
+(add-hook 'sh-mode-hook #'tree-sitter-hl-mode)
+
+
 ;; Lsp UI ;;
 (setq lsp-ui-doc-enable 1)
 (setq lsp-ui-doc-position 'at-point)
