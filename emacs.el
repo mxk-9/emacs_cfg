@@ -36,27 +36,34 @@
 (setq indent-line-function 'insert-tab)
 
 ;; Line numbers and columns
-(global-display-line-numbers-mode 1)
+;; (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 (setq column-number-mode t)
-(setq display-fill-column-indicator-mode 1)
 (setq fill-column 80)
 
-(add-hook 'text-mode-hook (lambda () (display-line-numbers-mode -1)))
-(add-hook 'text-mode-hook #'auto-fill-mode)
-(add-hook 'text-mode-hook (lambda () (setq fill-column 80)))
-
-(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
-(add-hook 'markdown-mode-hook (lambda () (display-line-numbers-mode -1)))
-
+(add-hook 'zig-mode-hook #'display-line-numbers-mode)
 (add-hook 'zig-mode-hook #'auto-fill-mode)
 (add-hook 'zig-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'zig-mode-hook (lambda() (setq fill-column 80)))
+
+(add-hook 'c-mode-hook #'display-line-numbers-mode)
+(add-hook 'c-mode-hook #'auto-fill-mode)
+(add-hook 'c-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'c-mode-hook (lambda() (setq fill-column 80)))
+
+(add-hook 'pascal-mode-hook #'display-line-numbers-mode)
+(add-hook 'pascal-mode-hook #'auto-fill-mode)
+(add-hook 'pascal-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'pascal-mode-hook (lambda() (setq fill-column 80)))
 
 ;; resize emacs frame by pixel
 (setq frame-resize-pixelwise t)
 (set-frame-position (selected-frame) 0 0)
 (set-frame-size (selected-frame) 1920 1080 t)
+
+;; prevent autoresizing windows when opening new buffers
+(setq even-window-heights nil)
+(setq even-window-sizes nil)
 
 ;; [(t, c)rying (to make, about) normal tabs] ;;
 (setq tab-bar-close-button-show nil)        ;; hide tab close / x button
@@ -85,12 +92,21 @@
 (require 'multiple-cursors)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-lpike-this)
 ;; Multiple cursors ;;
 
 ;; Custom keybinds ;;
 (global-set-key (kbd "C-<return>") 'evil-mode)
+
+(global-set-key (kbd "M-<f4>") 'compile)
+(global-set-key (kbd "<f4>") (kbd "C-u M-x compile"))
+
+(global-set-key (kbd "<f5>") 'desktop-save-in-desktop-dir)
+(global-set-key (kbd "<f6>") 'desktop-change-dir)
+
 (global-set-key (kbd "<f7>") 'windresize)
+(global-set-key (kbd "<f8>") 'transpose-frame)
+
 ;; Custom keybinds ;;
 
 ;; MARKDOWN SETTINGS ;;
@@ -117,6 +133,7 @@
 ;; Enables lsp in chosen languages ;;
 (require 'lsp-mode)
 (add-hook 'c++-mode-hook #'lsp)
+(add-hook 'c++-mode-hook #'tree-sitter-hl-mode)
 
 (add-hook 'c-mode-hook #'lsp)
 (add-hook 'c-mode-hook #'tree-sitter-hl-mode)
@@ -128,9 +145,12 @@
 (add-hook 'lua-mode-hook #'tree-sitter-hl-mode)
 
 (add-hook 'nix-mode-hook #'lsp)
+(add-hook 'nix-mode-hook #'tree-sitter-hl-mode)
 
 (add-hook 'zig-mode-hook #'lsp)
 (add-hook 'zig-mode-hook #'tree-sitter-hl-mode)
+
+(add-hook 'pascal-mode-hook #'tree-sitter-hl-mode)
 
 (add-hook 'sh-mode-hook #'tree-sitter-hl-mode)
 
@@ -162,20 +182,5 @@
 
 ;; vscode-cpptools
 (require 'dap-cpptools)
-
-;; ;; Rust
-;; (dap-register-debug-template "Rust::GDB Run Configuration"
-;;                              (list :type "gdb"
-;;                                    :request "launch"
-;;                                    :name "GDB::Run"
-;;                                    :gdbpath "rust-gdb"
-;;                                    :target nil
-;;                                    :cwd nil))
-
-;; ;; Go
-;; (require 'dap-dlv-go)
-;; dap-mode ;;
-
-;; ==[LSP]== ;;
 
 (load-file custom-file)
