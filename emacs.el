@@ -3,6 +3,16 @@
 
 ;; use custom file
 (setq custom-file "~/.emacs.custom.el")
+(load-file custom-file)
+
+;; ==[MELPA]== ;;
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+;; ==[MELPA]== ;;
+
+;; Disable fucking warning ;;
+(setq warning-minimum-level :error)
 
 ;; Smooth scroll
 (setq scroll-step 1
@@ -41,20 +51,19 @@
 (setq column-number-mode t)
 (setq fill-column 80)
 
-(add-hook 'zig-mode-hook #'display-line-numbers-mode)
-(add-hook 'zig-mode-hook #'auto-fill-mode)
-(add-hook 'zig-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'zig-mode-hook (lambda() (setq fill-column 80)))
+(defun lines-and-column (modeHook)
+  (add-hook modeHook #'display-line-numbers-mode)
+  (add-hook modeHook #'auto-fill-mode)
+  (add-hook modeHook #'display-fill-column-indicator-mode)
+  (add-hook modeHook (lambda() (setq fill-column 80)))
+)
 
-(add-hook 'c-mode-hook #'display-line-numbers-mode)
-(add-hook 'c-mode-hook #'auto-fill-mode)
-(add-hook 'c-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'c-mode-hook (lambda() (setq fill-column 80)))
-
-(add-hook 'pascal-mode-hook #'display-line-numbers-mode)
-(add-hook 'pascal-mode-hook #'auto-fill-mode)
-(add-hook 'pascal-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'pascal-mode-hook (lambda() (setq fill-column 80)))
+(lines-and-column 'zig-mode-hook)
+(lines-and-column 'c-mode-hook)
+(lines-and-column 'pascal-mode-hook)
+(lines-and-column 'nix-mode-hook)
+(lines-and-column 'c++-mode-hook)
+(lines-and-column 'lua-mode-hook)
 
 ;; resize emacs frame by pixel
 (setq frame-resize-pixelwise t)
@@ -106,6 +115,8 @@
 
 (global-set-key (kbd "<f7>") 'windresize)
 (global-set-key (kbd "<f8>") 'transpose-frame)
+(global-set-key (kbd "<f10>") 'save-buffers-kill-emacs)
+(global-set-key (kbd "S-<f10>") (lambda () (interactive) (desktop-save-in-desktop-dir) (save-buffers-kill-emacs)))
 
 ;; Custom keybinds ;;
 
@@ -121,37 +132,21 @@
   (require 'all-the-icons))
 ;; All the icons ;;
 
-;; ==[MELPA]== ;;
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-;; ==[MELPA]== ;;
-
-
 ;; ==[LSP]== ;;
 
 ;; Enables lsp in chosen languages ;;
 (require 'lsp-mode)
-(add-hook 'c++-mode-hook #'lsp)
-(add-hook 'c++-mode-hook #'tree-sitter-hl-mode)
+(defun lsp-and-tree (modeHook)
+  (add-hook modeHook #'lsp)
+  (add-hook modeHook #'tree-sitter-hl-mode))
 
-(add-hook 'c-mode-hook #'lsp)
-(add-hook 'c-mode-hook #'tree-sitter-hl-mode)
-
-(add-hook 'go-mode-hook #'lsp)
-(add-hook 'go-mode-hook #'tree-sitter-hl-mode)
-
-(add-hook 'lua-mode-hook #'lsp)
-(add-hook 'lua-mode-hook #'tree-sitter-hl-mode)
-
-(add-hook 'nix-mode-hook #'lsp)
-(add-hook 'nix-mode-hook #'tree-sitter-hl-mode)
-
-(add-hook 'zig-mode-hook #'lsp)
-(add-hook 'zig-mode-hook #'tree-sitter-hl-mode)
+(lsp-and-tree 'c++-mode-hook)
+(lsp-and-tree 'c-mode-hook)
+(lsp-and-tree 'zig-mode-hook)
+(lsp-and-tree 'lua-mode-hook)
+(lsp-and-tree 'nix-mode-hook)
 
 (add-hook 'pascal-mode-hook #'tree-sitter-hl-mode)
-
 (add-hook 'sh-mode-hook #'tree-sitter-hl-mode)
 
 
@@ -183,4 +178,3 @@
 ;; vscode-cpptools
 (require 'dap-cpptools)
 
-(load-file custom-file)
