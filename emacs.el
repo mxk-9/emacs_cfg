@@ -64,6 +64,7 @@
 (lines-and-column 'nix-mode-hook)
 (lines-and-column 'c++-mode-hook)
 (lines-and-column 'lua-mode-hook)
+(lines-and-column 'makefile-mode-hook)
 
 ;; resize emacs frame by pixel
 (setq frame-resize-pixelwise t)
@@ -148,7 +149,6 @@
 
 (add-hook 'pascal-mode-hook #'tree-sitter-hl-mode)
 (add-hook 'sh-mode-hook #'tree-sitter-hl-mode)
-
 
 ;; Lsp UI ;;
 (setq lsp-ui-doc-enable 1)
