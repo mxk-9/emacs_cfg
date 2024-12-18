@@ -19,8 +19,8 @@
       scroll-conservatively 10000)
 
 ;; Set Font
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono Medium 16"))
-(set-face-attribute 'default nil :font "JetBrains Mono Medium 16")
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono Medium 14"))
+(set-face-attribute 'default nil :font "JetBrains Mono Medium 14")
 
 ;; HIDE SOME GRAPHICAL ELEMENTS
 (tool-bar-mode -1)
@@ -63,13 +63,14 @@
 (lines-and-column 'pascal-mode-hook)
 (lines-and-column 'nix-mode-hook)
 (lines-and-column 'c++-mode-hook)
+(lines-and-column 'go-mode-hook)
 (lines-and-column 'lua-mode-hook)
 (lines-and-column 'makefile-mode-hook)
 
 ;; resize emacs frame by pixel
 (setq frame-resize-pixelwise t)
 (set-frame-position (selected-frame) 0 0)
-(set-frame-size (selected-frame) 1920 1080 t)
+(set-frame-size (selected-frame) 800 600 t)
 
 ;; prevent autoresizing windows when opening new buffers
 (setq even-window-heights nil)
@@ -106,7 +107,7 @@
 ;; Multiple cursors ;;
 
 ;; Custom keybinds ;;
-(global-set-key (kbd "C-<return>") 'evil-mode)
+(global-set-key (kbd "C-x e") 'evil-mode)
 
 (global-set-key (kbd "M-<f4>") 'compile)
 (global-set-key (kbd "<f4>") (kbd "C-u M-x compile"))
@@ -145,7 +146,6 @@
 (lsp-and-tree 'c-mode-hook)
 (lsp-and-tree 'zig-mode-hook)
 (lsp-and-tree 'lua-mode-hook)
-(lsp-and-tree 'nix-mode-hook)
 
 (add-hook 'pascal-mode-hook #'tree-sitter-hl-mode)
 (add-hook 'sh-mode-hook #'tree-sitter-hl-mode)
